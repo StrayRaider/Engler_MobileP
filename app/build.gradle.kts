@@ -42,6 +42,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.camera.camera2) // CameraX
+    implementation(libs.androidx.camera.lifecycle) // CameraX Lifecycle
+    implementation(libs.androidx.camera.view) // CameraX View
+    implementation(libs.mlkit.text) // ML Kit Text Recognition
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
