@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">Engler</string>
+    <string name="app_name">demoKotlin</string>
+    <string-array name="gender_options">
+        <item>female</item>
+        <item>male</item>
+        <item>prefer not to say</item>
+    </string-array>
 </resources>
+
