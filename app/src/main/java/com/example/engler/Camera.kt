@@ -20,7 +20,7 @@ import androidx.camera.view.PreviewView
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import android.view.MotionEvent
 
-class MainActivity : AppCompatActivity() {
+class Camera : AppCompatActivity() {
 
     private lateinit var previewView: PreviewView
     private lateinit var resultTextView: TextView
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.camera)
 
         previewView = findViewById(R.id.previewView)
         resultTextView = findViewById(R.id.resultTextView)
