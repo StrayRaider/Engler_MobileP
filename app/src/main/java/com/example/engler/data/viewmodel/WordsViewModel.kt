@@ -1,4 +1,4 @@
-package com.example.engler.viewmodel
+package com.example.engler.data.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.map

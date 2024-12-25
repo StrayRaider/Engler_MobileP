@@ -24,5 +24,4 @@ interface UserWordDao {
 
     @Delete
     fun deleteUserWord(userWord: UserWord)
-    fun getUserWords()
 }
