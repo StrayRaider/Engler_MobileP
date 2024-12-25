@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat.startActivity
 
-class Login (private val context:Context, private val button:Button, private val userName: EditText,private val password: EditText,private val btnSignIn: Button, private val btnCamera:Button){
+class Login (private val context:Context, private val button:Button, private val userName: EditText,private val password: EditText,private val btnSignIn: Button){
 
     fun checkUser():Boolean {
         var isUser: Boolean= false
@@ -36,10 +36,5 @@ class Login (private val context:Context, private val button:Button, private val
         }
     }
 
-    fun cameraButtonClickListener(){
-        btnCamera.setOnClickListener{
-            val intent = Intent(context, Camera::class.java)
-            context.startActivity(intent)
-        }
-    }
+
 }

@@ -82,13 +82,6 @@
         app:layout_constraintTop_toBottomOf="@+id/rlInputs"
         android:layout_marginTop="20dp"/>
 
-    <Button
-        android:id="@+id/btnCamera"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="camera"
-        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

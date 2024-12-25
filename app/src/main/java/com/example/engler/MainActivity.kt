@@ -19,12 +19,11 @@ class MainActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.etPassword)
         val submitButton = findViewById<Button>(R.id.btnSubmit)
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
-        val cameraBtn = findViewById<Button>(R.id.btnCamera)
 
-        val loginUser = Login(this, submitButton, userName, password, signInBtn, cameraBtn)
+
+        val loginUser = Login(this, submitButton, userName, password, signInBtn)
 
         loginUser.setupButtonClickListener()
         loginUser.signInButtonClickListener()
-        loginUser.cameraButtonClickListener()
     }
 }
