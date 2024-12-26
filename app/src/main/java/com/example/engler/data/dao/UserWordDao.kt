@@ -17,12 +17,11 @@ interface UserWordDao {
     fun getUserWordById(userWordId: Int): UserWord
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUserWord(userWord: UserWord)
+    fun insertUserWord(userWord: UserWord)
 
     @Update
-    suspend fun updateUserWord(userWord: UserWord)
+    fun updateUserWord(userWord: UserWord)
 
     @Delete
-    suspend fun deleteUserWord(userWord: UserWord)
-    fun getUserWords()
+    fun deleteUserWord(userWord: UserWord)
 }

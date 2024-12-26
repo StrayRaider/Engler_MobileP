@@ -1,7 +1,7 @@
 package com.example.engler.data.factory
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.engler.dao.WordDao
+import com.example.engler.data.dao.WordDao
 import com.example.engler.data.viewmodel.WordsViewModel
 
 class WordsViewModelFactory(private val dao: WordDao)

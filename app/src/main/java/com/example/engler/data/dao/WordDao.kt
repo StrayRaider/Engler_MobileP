@@ -13,14 +13,14 @@ interface WordDao {
     fun getAllWords(): LiveData<List<Word>>
 
     @Query("SELECT * FROM words WHERE word_id = :wordId")
-    suspend fun getWordById(wordId: Int): Word
+    fun getWordById(wordId: Int): Word
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertWord(word: Word)
+    fun insertWord(word: Word)
 
     @Update
-    suspend fun updateWord(word: Word)
+    fun updateWord(word: Word)
 
     @Delete
-    suspend fun deleteWord(word: Word)
+    fun deleteWord(word: Word)
 }

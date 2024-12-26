@@ -1,9 +1,9 @@
-package com.example.engler.viewmodel
+package com.example.engler.data.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.map
-import com.example.engler.dao.WordDao
-import com.example.engler.entities.Word
+import com.example.engler.data.dao.WordDao
+import com.example.engler.data.entities.Word
 import kotlinx.coroutines.launch
 
 class WordsViewModel(val dao:WordDao ): ViewModel() {

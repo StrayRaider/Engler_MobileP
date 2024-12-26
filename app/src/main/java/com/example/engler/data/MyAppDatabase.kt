@@ -22,7 +22,8 @@ abstract class MyAppDatabase : RoomDatabase() {
                         context.applicationContext,
                         MyAppDatabase::class.java,
                         "myapp_database"
-                    ).build()
+                    ).allowMainThreadQueries()
+                        .build()
                     INSTANCE = instance
                 }
                 return instance
