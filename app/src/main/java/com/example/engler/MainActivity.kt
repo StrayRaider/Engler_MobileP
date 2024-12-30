@@ -1,4 +1,5 @@
 package com.example.engler
+import JwtStorage
 import com.example.engler.data.viewmodel.WordsViewModel
 import com.example.engler.data.MyAppDatabase
 import com.example.engler.data.factory.WordsViewModelFactory
@@ -31,6 +32,21 @@ class MainActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.etPassword)
         val submitButton = findViewById<Button>(R.id.btnSubmit)
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
+
+
+        // Create an instance of JwtStorage
+        val jwtStorage = JwtStorage(this)
+
+        // Save a JWT token
+        val jwtToken = "emre"
+        jwtStorage.saveJwtToken(jwtToken)
+
+        // Retrieve and log the JWT token
+        val retrievedToken = jwtStorage.getJwtToken()
+        println("JWT Token: $retrievedToken")
+
+        // Clear the token if needed
+        jwtStorage.clearJwtToken()
 
 
         val loginUser = Login(this, submitButton, userName, password, signInBtn)
