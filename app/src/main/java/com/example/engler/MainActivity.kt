@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         // Set up observers
         setupObservers()
+        Connectivity.checkAndCallApi(this)
         
         val userName = findViewById<EditText>(R.id.etMail)
         val password = findViewById<EditText>(R.id.etPassword)
