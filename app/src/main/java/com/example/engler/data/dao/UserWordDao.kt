@@ -10,7 +10,7 @@ import com.example.engler.data.entities.UserWord
 
 @Dao
 interface UserWordDao {
-    @Query("SELECT * FROM user_words WHERE user_word_id = :userId")
+    @Query("SELECT * FROM user_words WHERE user_id = :userId")
     fun getUserWords(userId: Int): LiveData<List<UserWord>>
 
     @Query("SELECT * FROM user_words WHERE user_word_id = :userWordId")

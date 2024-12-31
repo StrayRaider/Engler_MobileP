@@ -1,86 +1,124 @@
 package com.example.engler
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.example.engler.data.MyAppDatabase
+import com.example.engler.data.entities.User
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
 class SignIn : AppCompatActivity() {
+    private var currentUserId: Int = -1
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.signin)
 
-        // Geri tuşu butonunu buluyoruz
+        // Find views
         val btnBack: ImageButton = findViewById(R.id.btnBack)
-        val btnCreateAccount: Button=findViewById(R.id.btnSignIn)
-        val username: EditText=findViewById(R.id.etUserName)
-        val password:EditText= findViewById(R.id.etPassword)
-        val date:EditText=findViewById(R.id.etBirthDate)
+        val btnCreateAccount: Button = findViewById(R.id.btnSignIn)
+        val username: EditText = findViewById(R.id.etUserName)
+        val password: EditText = findViewById(R.id.etPassword)
+        val date: EditText = findViewById(R.id.etBirthDate)
         val gender: Spinner = findViewById(R.id.spGender)
 
-        // Geri tuşuna tıklandığında önceki sayfaya dönüyoruz
+        // Set back button behavior
         btnBack.setOnClickListener {
-            onBackPressed()  // Geri tuşuna basma davranışını tetikler
+            onBackPressed()
         }
 
+        // Set create account button behavior
         btnCreateAccount.setOnClickListener {
-            createAccount(btnCreateAccount,username.text.toString(),password.text.toString(),date.text.toString(),gender.selectedItem.toString())
+            val userNameText = username.text.toString()
+            val passwordText = password.text.toString()
+            val birthDateText = date.text.toString()
+            val genderText = gender.selectedItem.toString()
+
+            createAccount(userNameText, passwordText, birthDateText, genderText)
         }
 
-        // Diğer işlemler
+        // Update title
         val textView: TextView = findViewById(R.id.tvTitle)
         textView.text = "Hoş Geldiniz!"
     }
 
-    // Geri tuşu davranışını override ediyorsak, super.onBackPressed() çağrısını unutmuyoruz
-    override fun onBackPressed() {
-        super.onBackPressed()  // Varsayılan geri tuşu davranışını çağırıyoruz
-    }
+    // Validate and create a new account
+    private fun createAccount(username: String, password: String, birthDate: String, gender: String) {
 
-    fun createAccount(button: Button, username: String, password: String, birthDate: String, gender: String) {
-        // Validate the inputs
-
-        // Check if username is not empty
+        // Validate inputs
         if (username.isEmpty()) {
-            button.text = "Please enter a username"
+            showMessage("Please enter a username")
             return
         }
 
-        // Check if password is not empty and meets length requirements (e.g., at least 6 characters)
         if (password.isEmpty() || password.length < 6) {
-            button.text = "Password must be at least 6 characters"
+            showMessage("Password must be at least 6 characters")
             return
         }
 
-        // Check if the birthDate is in a valid date format (e.g., "yyyy-MM-dd")
+        if (birthDate.isEmpty()) {
+            showMessage("Please enter your birth date")
+            return
+        }
+
+        // Validate date format "yyyy-MM-dd"
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-        dateFormat.isLenient = false
         try {
-            // Attempt to parse the birthDate string into a Date object
-            val date = dateFormat.parse(birthDate)
-            if (date == null) {
-                button.text = "Invalid birth date format"
+            dateFormat.isLenient = false
+            val dateParsed = dateFormat.parse(birthDate)
+            if (dateParsed == null) {
+                showMessage("Invalid birth date format")
                 return
             }
         } catch (e: Exception) {
-            button.text = "Please enter a valid birth date (dd/MM/yyyy)"
+            showMessage("Invalid birth date format")
             return
         }
 
-        // Check if gender is selected (assuming gender can be "male", "female", or "prefer not to say")
+        // Validate gender selection
         if (gender.isEmpty() || (gender != "male" && gender != "female" && gender != "prefer not to say")) {
-            button.text = "Please select a valid gender"
+            showMessage("Please select a valid gender")
             return
         }
 
-        // If all validations pass, update button text to indicate account creation
-        button.text = "Account Created"
-        onBackPressed()
+        // Create user object
+        val user = User(
+            userId = 0,
+            username = username,
+            email = password, // You may want to store an email separately, but using password here as a placeholder // Ensure that the User entity has a password field
+            totalScore = 0,
+            createdAt = System.currentTimeMillis(),
+            jwtToken = "aasdf"
+        )
+
+        // Access the database and insert the user
+        val db = MyAppDatabase.getInstance(applicationContext)
+        val userDao = db.userDao
+
+        // Use lifecycleScope for database operation in an Activity
+        lifecycleScope.launch {
+            userDao.insertUser(user)
+
+            showMessage("Account created successfully!")
+
+            super.onBackPressed()
+
+        }
     }
+
+    // Helper function to show a toast message
+    private fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+
+    // Override the back button behavior if necessary
+
 }

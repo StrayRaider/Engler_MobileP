@@ -10,38 +10,102 @@ import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.lifecycleScope
+import com.example.engler.data.MyAppDatabase
+import com.example.engler.data.entities.UserWord
+import com.example.engler.data.entities.Word
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import android.util.Log
+import android.widget.ImageButton
 
-class WordList: AppCompatActivity() {
-    private val wordList = mutableListOf("Apple", "Banana", "Cherry", "Date", "Elderberry","Apple", "Banana", "Cherry", "Date", "Elderberry")
+
+class WordList : AppCompatActivity() {
+    private val wordList = mutableListOf<String>()
+    private lateinit var adapter: ArrayAdapter<String> // Initialize adapter here
+    private var checkdetectedText: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.word_list)
 
-        val listOfWords: ListView= findViewById<ListView>(R.id.lvWords)
-        val btnAddWord: Button= findViewById<Button>(R.id.btnAddWord)
-        val btnCamera: Button= findViewById<Button>(R.id.btnCamera)
+        val listOfWords: ListView = findViewById(R.id.lvWords)
+        val btnAddWord: Button = findViewById(R.id.btnAddWord)
+        val btnCamera: Button = findViewById(R.id.btnCamera)
+        val btnQuiz: Button = findViewById(R.id.btnQuiz)
+        val detectedText = intent.getStringExtra("detectedText") ?: ""
+        val btnBack= findViewById<ImageButton>(R.id.btnBack)
 
-
-        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, wordList)
+        adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, wordList) // Initialize
         listOfWords.adapter = adapter
+
+        val db = MyAppDatabase.getInstance(applicationContext)
+        val userWordDao = db.userWordDao
+        val wordDao = db.wordDao
+
+        userWordDao.getUserWords(3).observe(this) { userWordList ->
+            lifecycleScope.launch(Dispatchers.IO) { // Run the whole process in IO
+                val newList = mutableListOf<String>()
+
+
+                userWordList?.forEach { userWord ->
+
+                    val word = wordDao.getWordById(userWord.wordId)
+                    word?.let {
+                        newList.add("${it.wordEn} + ${userWord.definition}")
+                    }
+                }
+
+                withContext(Dispatchers.Main) {
+                    if (newList.isEmpty()) {
+                        showMessage("No words found in userWords")
+                        Log.d("WordListActivity", "No words found in userWords")
+                        // Handle empty list case (e.g., show a message)
+                    } else {
+                        wordList.clear()
+                        wordList.addAll(newList)
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            }
+        }
+
+
+        if (detectedText != "") {
+            detectedText.let {
+                checkdetectedText = true
+                showAddWordDialog(adapter, detectedText)
+            }
+        }
 
         // Set up the Add Word button
         btnAddWord.setOnClickListener {
-            showAddWordDialog(adapter)
+            checkdetectedText = false
+            showAddWordDialog(adapter, detectedText)
         }
 
-        btnCamera.setOnClickListener{
+        btnCamera.setOnClickListener {
             val intent = Intent(this, Camera::class.java)
             startActivity(intent)
         }
 
+        btnQuiz.setOnClickListener {
+            val intent = Intent(this, Quiz::class.java)
+            startActivity(intent)
+        }
+
+        btnBack.setOnClickListener {
+            onBackPressed()
+        }
+
     }
 
-    private fun showAddWordDialog(adapter: ArrayAdapter<String>) {
+    private fun showAddWordDialog(adapter: ArrayAdapter<String>, detectedText: String) {
         // Yeni kelime için giriş alanları oluşturuluyor
         val inputEditText = EditText(this).apply {
             hint = "Kelimenin İngilizcesi"
+            if (checkdetectedText) { setText(detectedText) }
         }
         val inputEditTextTranslation = EditText(this).apply {
             hint = "Kelimenin Türkçesi"
@@ -69,17 +133,48 @@ class WordList: AppCompatActivity() {
                 val translation = inputEditTextTranslation.text.toString().trim()
                 val description = inputEditTextDescription.text.toString().trim()
 
-                if (newWord.isNotEmpty() && translation.isNotEmpty() && description.isNotEmpty()) {
-                    val formattedWord = "$newWord - $translation ($description)"
-                    wordList.add(formattedWord) // Kelimeyi listeye ekliyoruz
-                    adapter.notifyDataSetChanged() // Listeyi güncelliyoruz
-                } else {
-                    Toast.makeText(this@WordList, "Fields cannot be empty", Toast.LENGTH_SHORT).show()
-                }
-            }
+                val word = Word(
+                    wordId = 0,  // Başlangıçta ID 0
+                    wordTr = translation,
+                    wordEn = newWord,
+                    createdAt = System.currentTimeMillis()
+                )
 
+                val db = MyAppDatabase.getInstance(applicationContext)
+                val wordDao = db.wordDao
+
+                lifecycleScope.launch {
+                    // Kelimeyi veritabanına ekleyin ve ID'yi alın
+                    val insertedWordId = wordDao.insertWord(word)
+
+                    // Burada, insert işleminden sonra dönen ID'yi kullanabilirsiniz
+                    Log.d("WordListActivity", "The wordId is: $insertedWordId")
+
+                    // Yeni kelimeyi ve açıklamayı 'user_words' tablosuna ekleyin
+                    val userWord = UserWord(
+                        userWordId = 0,
+                        userId = 3,  // currentUser.id'yi burada kullanıyoruz
+                        wordId = insertedWordId.toInt(),  // ID'yi kullanın
+                        score = 0,
+                        definition = description,
+                        addedAt = System.currentTimeMillis()
+                    )
+
+                    val userWordDao = db.userWordDao
+                    userWordDao.insertUserWord(userWord)  // Kullanıcı açıklamasını veritabanına ekleyin
+
+                    wordList.add(newWord)
+                    adapter.notifyDataSetChanged()
+
+                    showMessage("Word and definition added successfully!")
+                }
+
+            }
             setNegativeButton("Cancel", null)
         }.show()
     }
 
+    private fun showMessage(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 }
