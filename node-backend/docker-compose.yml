@@ -13,7 +13,7 @@ services:
     restart: unless-stopped
 
   node:
-    image: docker.io/node:latest
+    image: docker.io/node:current-alpine3.20
     container_name: node_app
     ports:
       - "3000:3000"

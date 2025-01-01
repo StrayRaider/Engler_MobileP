@@ -413,23 +413,28 @@ app.post('/translate', async (req, res) => {
     const { q, source, target } = req.body;
 
     try {
-        const response = await fetch("http://localhost:5000/translate", {
+        const response = await fetch("http://libretranslate:5000/translate", {
             method: "POST",
+            headers: { "Content-Type": "application/json", "accept": "application/json" },
             body: JSON.stringify({
                 q,
-                source,
+                source: source || 'auto',
                 target
-            }),
-            headers: { "Content-Type": "application/json" }
+            })
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const result = await response.json();
         res.json(result);
     } catch (error) {
         console.error('Error translating text:', error);
-        res.status(500).json({ error: 'Translation service error' });
+        res.status(500).json({ error: 'Translation service error', details: error.message });
     }
 });
+
 
 // -------------------------------------------------------
 
