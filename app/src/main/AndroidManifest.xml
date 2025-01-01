@@ -35,13 +35,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-                android:name=".TranslateActivity"
-                android:exported="false"/>
-        <activity
-                android:name=".MainActivity2"
-                android:exported="false"/>
-    </application>
+
 
 
         <!-- Additional Activities -->
@@ -60,21 +54,13 @@
 
         <!-- Broadcast Receivers -->
         <receiver
-            android:name=".PowerConnectionReceiver"
+            android:name=".PowerReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BATTERY_CHANGED" />
                 <action android:name="android.intent.action.ACTION_POWER_CONNECTED" />
                 <action android:name="android.intent.action.ACTION_POWER_DISCONNECTED" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".BootReceiver"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
         <receiver
@@ -86,7 +72,5 @@
             </intent-filter>
         </receiver>
 
-        <!-- Services -->
-        <service android:name=".MonitoringService" />
     </application>
 </manifest>

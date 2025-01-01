@@ -48,8 +48,8 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     // Navigation
-    implementation(libs.androidx.navigation.fragment.ktx)
-    implementation(libs.androidx.navigation.ui.ktx)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.8.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.8.5")
 
     // Testing
     testImplementation(libs.junit)
@@ -88,6 +88,4 @@ dependencies {
 
     // SDK Coroutines (url-test specific)
     implementation("com.google.android.libraries.sdkcoroutines:sdkcoroutines:1.0.0")
-}
-
 }

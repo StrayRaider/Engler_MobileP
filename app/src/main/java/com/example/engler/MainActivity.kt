@@ -11,7 +11,7 @@ import android.widget.Button
 import android.content.Intent
 import android.util.Log
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
+
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Lifecycle
