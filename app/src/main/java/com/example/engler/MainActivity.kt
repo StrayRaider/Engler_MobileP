@@ -55,8 +55,8 @@ class MainActivity : AppCompatActivity() {
         // Clear the token if needed
         jwtStorage.clearJwtToken()
 
+        val loginUser = Login(this, submitButton, userName, password, signInBtn,this)
 
-        val loginUser = Login(this, submitButton, userName, password, signInBtn)
         CoroutineScope(Dispatchers.Main).launch {
             try {
                 val response = aiCaller.makeApiRequest("Explain how AI works")
@@ -67,7 +67,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val loginUser = Login(this, submitButton, userName, password, signInBtn,this)
 
         loginUser.setupButtonClickListener()
         loginUser.signInButtonClickListener()
