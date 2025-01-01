@@ -1,10 +1,12 @@
 package com.example.engler
+import AiCaller
 import com.example.engler.data.viewmodel.WordsViewModel
 import com.example.engler.data.MyAppDatabase
 import com.example.engler.data.factory.WordsViewModelFactory
 import android.os.Bundle
 import android.widget.Button
 import android.content.Intent
+import android.util.Log
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
@@ -14,6 +16,9 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.EdgeEffectFactory.EdgeDirection
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,6 +37,17 @@ class MainActivity : AppCompatActivity() {
         val password = findViewById<EditText>(R.id.etPassword)
         val submitButton = findViewById<Button>(R.id.btnSubmit)
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
+
+        val aiCaller = AiCaller()
+
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = aiCaller.makeApiRequest("Explain how AI works")
+                Log.d("API_RESPONSE", response)
+            } catch (e: Exception) {
+                Log.e("API_ERROR", e.message.toString())
+            }
+        }
 
 
         val loginUser = Login(this, submitButton, userName, password, signInBtn,this)
