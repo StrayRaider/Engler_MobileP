@@ -1,4 +1,4 @@
-package com.example.engler.data.viewmodel
+/*package com.example.engler.data.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -93,4 +93,4 @@ class UserWordsViewModel(private val dao: UserWordDao) : ViewModel() {
             append('\n')
         }
     }
-}
+}*/

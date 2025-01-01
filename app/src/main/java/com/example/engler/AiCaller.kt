@@ -1,4 +1,14 @@
+package com.example.engler
+
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -6,53 +16,84 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 
-class AiCaller {
-
+class AiCaller : AppCompatActivity() {
     private val client = OkHttpClient()
+    private val chatMessages = mutableListOf<String>()
+    private lateinit var chatAdapter: ChatAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.chatbot)
+
+        val promptEditText: EditText = findViewById(R.id.promptEditText)
+        val btnSend: Button = findViewById(R.id.sendButton)
+        val chatRecyclerView: RecyclerView = findViewById(R.id.chatRecyclerView)
+
+        // Set up RecyclerView
+        chatAdapter = ChatAdapter(chatMessages)
+        chatRecyclerView.layoutManager = LinearLayoutManager(this)
+        chatRecyclerView.adapter = chatAdapter
+
+        btnSend.setOnClickListener {
+            val prompt = promptEditText.text.toString().trim()
+            if (prompt.isNotEmpty()) {
+                // Add user's input to chat and clear the EditText
+                chatMessages.add("You: $prompt")
+                chatAdapter.notifyItemInserted(chatMessages.size - 1)
+                chatRecyclerView.scrollToPosition(chatMessages.size - 1)
+                promptEditText.text.clear()
+
+                // Make API request and display the response
+                CoroutineScope(Dispatchers.Main).launch {
+                    try {
+                        val response = makeApiRequest(prompt)
+                        chatMessages.add("AI: $response")
+                        chatAdapter.notifyItemInserted(chatMessages.size - 1)
+                        chatRecyclerView.scrollToPosition(chatMessages.size - 1)
+                    } catch (e: Exception) {
+                        chatMessages.add("Error: ${e.message}")
+                        chatAdapter.notifyItemInserted(chatMessages.size - 1)
+                        chatRecyclerView.scrollToPosition(chatMessages.size - 1)
+                    }
+                }
+            }
+        }
+    }
 
     // Suspend function to make the API request with a custom AI prompt
-    suspend fun makeApiRequest(prompt: String): String {
+    private suspend fun makeApiRequest(prompt: String): String {
         val url =
             "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AIzaSyBRsAq9DfkSjc2IQP18HT5CkESnGhQEQno"
 
-        // JSON payload for the request
         val jsonPayload = JSONObject().apply {
             put("contents", JSONArray().apply {
                 put(JSONObject().apply {
                     put("parts", JSONArray().apply {
                         put(JSONObject().apply {
-                            put("text", prompt) // Use the input string as the AI prompt
+                            put("text", prompt)
                         })
                     })
                 })
             })
         }
 
-        // Create the request body
         val mediaType = "application/json".toMediaType()
         val requestBody = RequestBody.create(mediaType, jsonPayload.toString())
-
-        // Build the request
         val request = Request.Builder()
             .url(url)
             .post(requestBody)
             .addHeader("Content-Type", "application/json")
             .build()
 
-        // Execute the request and return the response
         return withContext(Dispatchers.IO) {
             val response = client.newCall(request).execute()
             if (response.isSuccessful) {
-                // Parse the response JSON and extract the "text" part
                 val responseBody = response.body?.string() ?: throw IOException("Empty response body")
                 val jsonResponse = JSONObject(responseBody)
-
-                // Extract the text from the nested structure
-                val candidates = jsonResponse.optJSONArray("candidates") // Get the "candidates" array
-                val content = candidates?.optJSONObject(0)?.optJSONObject("content") // Get the "content" object
-                val parts = content?.optJSONArray("parts") // Get the "parts" array
-                val text = parts?.optJSONObject(0)?.optString("text") // Extract the "text" field
-                text ?: throw IOException("Response does not contain 'text' field")
+                val candidates = jsonResponse.optJSONArray("candidates")
+                val content = candidates?.optJSONObject(0)?.optJSONObject("content")
+                val parts = content?.optJSONArray("parts")
+                parts?.optJSONObject(0)?.optString("text") ?: throw IOException("Response does not contain 'text'")
             } else {
                 throw IOException("Request failed with code: ${response.code}")
             }

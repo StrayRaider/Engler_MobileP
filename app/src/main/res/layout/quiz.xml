@@ -3,69 +3,89 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rootLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp">
+
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back Button"
+        android:layout_margin="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvTotalScore"
         android:layout_width="match_parent"
         android:layout_height="50dp"
+        android:layout_marginTop="40dp"
         android:text="Your Total Score: ..."
         android:textAlignment="center"
         android:textSize="25sp"
-        tools:ignore="MissingConstraints"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textColor="@color/buttonColorBlueDark" />
 
     <LinearLayout
         android:id="@+id/linearLayoutQuiz"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/tvTotalScore"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/tvTotalScore"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <!-- Soru metni -->
         <TextView
             android:id="@+id/tvQuestion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:gravity="center"
             android:text="WORD"
             android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="20dp" />
+            android:textStyle="bold" />
 
         <!-- Şıklar -->
         <Button
             android:id="@+id/btnOption1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:text="A) Paris"
-            android:layout_marginVertical="8dp" />
+            android:backgroundTint="@color/buttonColorBlue" />
 
         <Button
             android:id="@+id/btnOption2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:text="B) Madrid"
-            android:layout_marginVertical="8dp" />
+            android:backgroundTint="@color/buttonColorBlue" />
 
         <Button
             android:id="@+id/btnOption3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:text="C) Berlin"
-            android:layout_marginVertical="8dp" />
+            android:backgroundTint="@color/buttonColorBlue" />
 
         <Button
             android:id="@+id/btnOption4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginVertical="8dp"
             android:text="D) Rome"
-            android:layout_marginVertical="8dp" />
+            android:backgroundTint="@color/buttonColorBlue" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

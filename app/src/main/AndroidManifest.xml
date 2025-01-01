@@ -52,6 +52,10 @@
             android:name=".Quiz"
             android:exported="true"> <!-- Set exported to true -->
         </activity>
+        <activity
+            android:name=".AiCaller"
+            android:exported="true"> <!-- Set exported to true -->
+        </activity>
     </application>
 
 </manifest>

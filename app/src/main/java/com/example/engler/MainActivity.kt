@@ -1,4 +1,6 @@
 package com.example.engler
+
+import com.example.engler.AiCaller
 import JwtStorage
 import AiCaller
 import com.example.engler.data.viewmodel.WordsViewModel
@@ -39,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         val submitButton = findViewById<Button>(R.id.btnSubmit)
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
 
-        val aiCaller = AiCaller()
 
         // Create an instance of JwtStorage
         val jwtStorage = JwtStorage(this)

@@ -2,9 +2,11 @@ package com.example.engler
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import com.example.engler.data.MyAppDatabase
@@ -16,8 +18,15 @@ class Quiz : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.quiz)
 
-        // Start the first question
+
+        val btnBack:ImageButton = findViewById<ImageButton>(R.id.btnBack)
+        btnBack.setOnClickListener {
+            onBackPressed()
+        }
+
+
         loadNewQuestion()
+
     }
 
     private fun loadNewQuestion() {
@@ -69,6 +78,8 @@ class Quiz : AppCompatActivity() {
                 showQuizDialog(wordDao.getWordById(randomUserWord.wordId).wordTr ?: "Translation not available", shuffledAnswers, correctAnswer)
             })
         })
+
+
     }
 
     private fun showQuizDialog(question: String, answers: List<String>, correctAnswer: String) {
@@ -94,15 +105,28 @@ class Quiz : AppCompatActivity() {
     }
 
     private fun checkAnswer(selectedAnswer: String, correctAnswer: String) {
+        val rootLayout:ConstraintLayout = findViewById<ConstraintLayout>(R.id.rootLayout) // Kök layout'a erişiyoruz
+
         if (selectedAnswer == correctAnswer) {
             showMessage("Correct! Well done.")
+            // Doğru cevapsa, arka planı yeşil yapalım
+            rootLayout.setBackgroundColor(resources.getColor(android.R.color.holo_green_light))
         } else {
             showMessage("Incorrect! The correct answer is '$correctAnswer'.")
+            // Yanlış cevapsa, arka planı kırmızı yapalım
+            rootLayout.setBackgroundColor(resources.getColor(android.R.color.holo_red_light))
+        }
+
+        // 1 saniye sonra arka planı tekrar beyaz yapalım
+        lifecycleScope.launch {
+            kotlinx.coroutines.delay(1000)
+            rootLayout.setBackgroundColor(resources.getColor(android.R.color.white))
         }
 
         // After answering, load a new question
         loadNewQuestion()
     }
+
 
     // Show message as a Toast
     private fun showMessage(message: String) {

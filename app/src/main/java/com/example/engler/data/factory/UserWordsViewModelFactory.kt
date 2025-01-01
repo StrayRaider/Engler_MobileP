@@ -1,4 +1,4 @@
-package com.example.engler.data.factory
+/*package com.example.engler.data.factory
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -12,4 +12,4 @@ class UserWordsViewModelFactory(private val dao: UserWordDao) : ViewModelProvide
         }
         throw IllegalArgumentException("Unknown ViewModel")
     }
-}
+}*/

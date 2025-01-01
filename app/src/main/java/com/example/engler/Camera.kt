@@ -20,6 +20,7 @@ import com.google.mlkit.vision.common.InputImage
 import androidx.camera.view.PreviewView
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import android.view.MotionEvent
+import android.widget.ImageButton
 
 class Camera : AppCompatActivity() {
 
@@ -51,11 +52,16 @@ class Camera : AppCompatActivity() {
         selectRegionButton = findViewById(R.id.selectRegionButton)
         drawingView = findViewById(R.id.drawingView)
         val btnAddWord:Button= findViewById<Button>(R.id.useWordButton)
+        val btnBack:ImageButton= findViewById<ImageButton>(R.id.btnBack)
 
         // Request necessary permissions if needed
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) !=
             android.content.pm.PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(android.Manifest.permission.CAMERA), 101)
+        }
+
+        btnBack.setOnClickListener {
+            onBackPressed()
         }
 
         captureButton.setOnClickListener {
