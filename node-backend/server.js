@@ -436,6 +436,54 @@ app.post('/translate', async (req, res) => {
 });
 
 
+
+/**
+ * @swagger
+ * /define:
+ *   post:
+ *     summary: Get word definitions using FreeDictionary API
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               word:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Word definitions
+ */
+app.post('/define', async (req, res) => {
+    const { word } = req.body;
+
+    try {
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${encodeURIComponent(word)}`, {
+            method: "GET",
+            headers: { "accept": "application/json" }
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+
+        // Extract only definitions
+        const definitions = result.map(entry => 
+            entry.meanings.flatMap(meaning => 
+                meaning.definitions.map(def => def.definition)
+            )
+        ).flat();
+
+        res.json({ definitions });
+    } catch (error) {
+        console.error('Error fetching definition:', error);
+        res.status(500).json({ error: 'Definition service error', details: error.message });
+    }
+});
+
 // -------------------------------------------------------
 
 
