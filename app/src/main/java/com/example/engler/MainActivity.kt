@@ -1,13 +1,6 @@
 package com.example.engler
 
-import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -166,81 +159,79 @@ class ApiClient {
     }
 }
 
-class MainActivity : AppCompatActivity() {
 
-    private val apiClient = ApiClient()
-
-    private fun callAllEndpoints() {
-        val baseUrl = "http://10.0.2.2:3000"
-
-        CoroutineScope(Dispatchers.IO).launch {
-            // Register
-            val registerResult = apiClient.registerUser("$baseUrl/register", "newuser", "newuser@example.com", "password123")
-            Log.d("Register Result", registerResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Register: $registerResult", Toast.LENGTH_LONG).show()
-            }
-
-            // Login
-            val loginResult = apiClient.loginUser("$baseUrl/login", "newuser@example.com", "password123")
-            Log.d("Login Result", loginResult)
-            withContext(Dispatchers.Main) {
-                if (loginResult.contains("Error")) {
-                    Log.e("Login Error", "Login failed: $loginResult")
-                    return@withContext
-                } else {
-                    Toast.makeText(this@MainActivity, "Login Successful", Toast.LENGTH_LONG).show()
-                }
-            }
-
-            // Add Word
-            val addWordResult = apiClient.addWord("$baseUrl/words", "elma", "apple")
-            Log.d("Add Word Result", addWordResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Add Word: $addWordResult", Toast.LENGTH_LONG).show()
-            }
-
-            // Get Words
-            val getWordsResult = apiClient.getWords("$baseUrl/words")
-            Log.d("Get Words Result", getWordsResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Get Words: $getWordsResult", Toast.LENGTH_LONG).show()
-            }
-
-            // Add User Word
-            val addUserWordResult = apiClient.addUserWord("$baseUrl/userwords", 1, 5, "A fruit")
-            Log.d("Add User Word Result", addUserWordResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Add User Word: $addUserWordResult", Toast.LENGTH_LONG).show()
-            }
-
-            // Get User Words
-            val getUserWordsResult = apiClient.getUserWords("$baseUrl/userwords")
-            Log.d("Get User Words Result", getUserWordsResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Get User Words: $getUserWordsResult", Toast.LENGTH_LONG).show()
-            }
-
-            // Update Word
-            val updateWordResult = apiClient.updateWord("$baseUrl/words/1", "armut", "pear")
-            Log.d("Update Word Result", updateWordResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Update Word: $updateWordResult", Toast.LENGTH_LONG).show()
-            }
-
-            // Delete Word
-            val deleteWordResult = apiClient.deleteWord("$baseUrl/words/1")
-            Log.d("Delete Word Result", deleteWordResult)
-            withContext(Dispatchers.Main) {
-                Toast.makeText(this@MainActivity, "Delete Word: $deleteWordResult", Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        callAllEndpoints()
-    }
-}
+/***
+ *
+ *
+ *
+ *
+ *     private val apiClient = ApiClient()
+ *
+ *     private fun callAllEndpoints() {
+ *         val baseUrl = "http://api.ifisnot.com"
+ *
+ *         CoroutineScope(Dispatchers.IO).launch {
+ *             // Register
+ *             val registerResult = apiClient.registerUser("$baseUrl/register", "newuser", "newuser@example.com", "password123")
+ *             Log.d("Register Result", registerResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Register: $registerResult", Toast.LENGTH_LONG).show()
+ *             }
+ *
+ *             // Login
+ *             val loginResult = apiClient.loginUser("$baseUrl/login", "newuser@example.com", "password123")
+ *             Log.d("Login Result", loginResult)
+ *             withContext(Dispatchers.Main) {
+ *                 if (loginResult.contains("Error")) {
+ *                     Log.e("Login Error", "Login failed: $loginResult")
+ *                     return@withContext
+ *                 } else {
+ *                     Toast.makeText(this@MainActivity, "Login Successful", Toast.LENGTH_LONG).show()
+ *                 }
+ *             }
+ *
+ *             // Add Word
+ *             val addWordResult = apiClient.addWord("$baseUrl/words", "elma", "apple")
+ *             Log.d("Add Word Result", addWordResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Add Word: $addWordResult", Toast.LENGTH_LONG).show()
+ *             }
+ *
+ *             // Get Words
+ *             val getWordsResult = apiClient.getWords("$baseUrl/words")
+ *             Log.d("Get Words Result", getWordsResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Get Words: $getWordsResult", Toast.LENGTH_LONG).show()
+ *             }
+ *
+ *             // Add User Word
+ *             val addUserWordResult = apiClient.addUserWord("$baseUrl/userwords", 1, 5, "A fruit")
+ *             Log.d("Add User Word Result", addUserWordResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Add User Word: $addUserWordResult", Toast.LENGTH_LONG).show()
+ *             }
+ *
+ *             // Get User Words
+ *             val getUserWordsResult = apiClient.getUserWords("$baseUrl/userwords")
+ *             Log.d("Get User Words Result", getUserWordsResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Get User Words: $getUserWordsResult", Toast.LENGTH_LONG).show()
+ *             }
+ *
+ *             // Update Word
+ *             val updateWordResult = apiClient.updateWord("$baseUrl/words/1", "armut", "pear")
+ *             Log.d("Update Word Result", updateWordResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Update Word: $updateWordResult", Toast.LENGTH_LONG).show()
+ *             }
+ *
+ *             // Delete Word
+ *             val deleteWordResult = apiClient.deleteWord("$baseUrl/words/1")
+ *             Log.d("Delete Word Result", deleteWordResult)
+ *             withContext(Dispatchers.Main) {
+ *                 Toast.makeText(this@MainActivity, "Delete Word: $deleteWordResult", Toast.LENGTH_LONG).show()
+ *             }
+ *         }
+ *     }
+ *
+ */
