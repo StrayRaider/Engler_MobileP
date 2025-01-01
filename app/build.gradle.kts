@@ -27,8 +27,9 @@ android {
             )
         }
     }
-    buildFeatures {
-        dataBinding  = true
+    buildFeatures{
+        dataBinding = true
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -46,24 +47,47 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.camera.camera2) // CameraX
-    implementation(libs.androidx.camera.lifecycle) // CameraX Lifecycle
-    implementation(libs.androidx.camera.view) // CameraX View
-    implementation(libs.mlkit.text) // ML Kit Text Recognition
+    // Navigation
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
+
+    // Testing
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Retrofit and OkHttp
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+    implementation("com.squareup.retrofit2:converter-moshi:2.11.0")
+
+    // Security
+    implementation("androidx.security:security-crypto:1.1.0-alpha04")
+
+    // CameraX
+    implementation(libs.androidx.camera.camera2)
+    implementation(libs.androidx.camera.lifecycle)
+    implementation(libs.androidx.camera.view)
+
+    // ML Kit
+    implementation(libs.mlkit.text)
+
+    // WorkManager
     implementation("androidx.work:work-runtime-ktx:2.10.0")
+
+    // Lifecycle
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.7")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+
+    // Room
     implementation("androidx.room:room-runtime:2.6.1")
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    implementation("androidx.security:security-crypto:1.1.0-alpha04")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
-//    implementation(libs.androidx.lifecycle.livedata.ktx)
-//    implementation(libs.androidx.lifecycle.viewmodel.ktx)
-//    implementation(libs.androidx.room.runtime)
-//    kapt(libs.androidx.room.compiler)
-//    implementation(libs.androidx.room.ktx)
+
+    // SDK Coroutines (url-test specific)
+    implementation("com.google.android.libraries.sdkcoroutines:sdkcoroutines:1.0.0")
+}
+
 }
