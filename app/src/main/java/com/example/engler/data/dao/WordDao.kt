@@ -21,6 +21,12 @@ interface WordDao {
     @Update
     fun updateWord(word: Word)
 
+    @Query("SELECT * FROM words WHERE word_en = :wordEn AND word_tr = :wordTr LIMIT 1")
+    fun getWordByEnAndTr(wordEn: String, wordTr: String): Word
+
+
+    @Query("UPDATE words SET word_tr = :newTr, word_en= :newEn WHERE word_id = :wordId")
+    fun updateTrEn(wordId: Int, newTr: String, newEn:String)
     @Delete
     fun deleteWord(word: Word)
 }

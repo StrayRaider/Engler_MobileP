@@ -1,5 +1,6 @@
 package com.example.engler
-import AiCaller
+
+import com.example.engler.AiCaller
 import com.example.engler.data.viewmodel.WordsViewModel
 import com.example.engler.data.MyAppDatabase
 import com.example.engler.data.factory.WordsViewModelFactory
@@ -38,16 +39,8 @@ class MainActivity : AppCompatActivity() {
         val submitButton = findViewById<Button>(R.id.btnSubmit)
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
 
-        val aiCaller = AiCaller()
 
-        CoroutineScope(Dispatchers.Main).launch {
-            try {
-                val response = aiCaller.makeApiRequest("Explain how AI works")
-                Log.d("API_RESPONSE", response)
-            } catch (e: Exception) {
-                Log.e("API_ERROR", e.message.toString())
-            }
-        }
+
 
 
         val loginUser = Login(this, submitButton, userName, password, signInBtn,this)
