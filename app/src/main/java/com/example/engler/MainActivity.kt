@@ -9,6 +9,7 @@ import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
 
 
-        val loginUser = Login(this, submitButton, userName, password, signInBtn)
+        val loginUser = Login(this, submitButton, userName, password, signInBtn,this)
 
         loginUser.setupButtonClickListener()
         loginUser.signInButtonClickListener()

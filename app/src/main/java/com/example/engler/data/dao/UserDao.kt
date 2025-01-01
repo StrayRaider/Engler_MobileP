@@ -15,9 +15,13 @@ interface UserDao {
     @Query("SELECT * FROM users WHERE user_id = :userId")
     fun getUserById(userId: Int): User?
 
+    @Query("SELECT * FROM users WHERE username = :userName")
+    fun getUserByUsername(userName: String): User?
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User)
 
+
     @Update
     fun updateUser(user: User)
+
 }
