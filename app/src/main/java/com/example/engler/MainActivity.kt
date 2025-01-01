@@ -1,6 +1,8 @@
 package com.example.engler
 
 import com.example.engler.AiCaller
+import JwtStorage
+import AiCaller
 import com.example.engler.data.viewmodel.WordsViewModel
 import com.example.engler.data.MyAppDatabase
 import com.example.engler.data.factory.WordsViewModelFactory
@@ -40,10 +42,32 @@ class MainActivity : AppCompatActivity() {
         val signInBtn = findViewById<Button>(R.id.btnSignIn)
 
 
+        // Create an instance of JwtStorage
+        val jwtStorage = JwtStorage(this)
 
+        // Save a JWT token
+        val jwtToken = "emre"
+        jwtStorage.saveJwtToken(jwtToken)
 
+        // Retrieve and log the JWT token
+        val retrievedToken = jwtStorage.getJwtToken()
+        println("JWT Token: $retrievedToken")
+
+        // Clear the token if needed
+        jwtStorage.clearJwtToken()
 
         val loginUser = Login(this, submitButton, userName, password, signInBtn,this)
+
+        CoroutineScope(Dispatchers.Main).launch {
+            try {
+                val response = aiCaller.makeApiRequest("Explain how AI works")
+                Log.d("API_RESPONSE", response)
+            } catch (e: Exception) {
+                Log.e("API_ERROR", e.message.toString())
+            }
+        }
+
+
 
         loginUser.setupButtonClickListener()
         loginUser.signInButtonClickListener()
