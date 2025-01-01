@@ -2,12 +2,11 @@ package com.example.engler
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-class NetworkReceiver : BroadcastReceiver() {
+class PowerReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        val batteryLevel = BatteryUtils.getBatteryLevel(context)
-        if (NetworkUtils.isConnected(context) && batteryLevel > 50) {
+        val batteryLevel = BatteryUtils.getBatteryLevel(intent)
+        if (batteryLevel > 50 && NetworkUtils.isConnected(context)) {
             NotificationHelper(context).showNotification(batteryLevel)
         }
     }
-
 }
