@@ -47,6 +47,10 @@
             android:name=".Camera"
             android:exported="true"> <!-- Set exported to true -->
         </activity>
+        <activity
+            android:name=".Quiz"
+            android:exported="true"> <!-- Set exported to true -->
+        </activity>
     </application>
 
 </manifest>

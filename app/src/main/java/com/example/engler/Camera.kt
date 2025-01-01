@@ -1,6 +1,7 @@
 package com.example.engler
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Rect
 import android.os.Bundle
@@ -27,6 +28,7 @@ class Camera : AppCompatActivity() {
     private lateinit var captureButton: Button
     private lateinit var selectRegionButton: Button
     private lateinit var drawingView: DrawingView
+    private lateinit var detectedText: String
 
     // Variables to store touch start and end points
     private var startX: Float = 0f
@@ -35,6 +37,8 @@ class Camera : AppCompatActivity() {
     private var endY: Float = 0f
     private lateinit var selectedRegion: Rect
     private var isSelectingRegion = false
+
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,6 +50,7 @@ class Camera : AppCompatActivity() {
         captureButton = findViewById(R.id.captureButton)
         selectRegionButton = findViewById(R.id.selectRegionButton)
         drawingView = findViewById(R.id.drawingView)
+        val btnAddWord:Button= findViewById<Button>(R.id.useWordButton)
 
         // Request necessary permissions if needed
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.CAMERA) !=
@@ -54,6 +59,7 @@ class Camera : AppCompatActivity() {
         }
 
         captureButton.setOnClickListener {
+            //KELİMELER BURADA TESPİT EDİLİYOR!!
             captureAndRecognizeText()
         }
 
@@ -63,6 +69,17 @@ class Camera : AppCompatActivity() {
             resultTextView.text = "Select a region on the camera preview."
         }
 
+        //KELİMEYİ LİSTEYE EKLE
+
+        btnAddWord.setOnClickListener {
+            if (::detectedText.isInitialized && detectedText.isNotEmpty()) {
+                val intent = Intent(this, WordList::class.java)
+                intent.putExtra("detectedText", detectedText)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this, "No text to use. Please detect text first.", Toast.LENGTH_SHORT).show()
+            }
+        }
         previewView.setOnTouchListener { _, event ->
             if (isSelectingRegion) {
                 when (event.action) {
@@ -144,9 +161,11 @@ class Camera : AppCompatActivity() {
 
         recognizer.process(inputImage)
             .addOnSuccessListener { visionText ->
-                val detectedText = visionText.text
+                detectedText = visionText.text
                 if (detectedText.isNotEmpty()) {
                     resultTextView.text = detectedText // Display detected text in the TextView
+                    // Detected text'i WordList sayfasına gönder
+
                 } else {
                     resultTextView.text = "No text detected"
                 }

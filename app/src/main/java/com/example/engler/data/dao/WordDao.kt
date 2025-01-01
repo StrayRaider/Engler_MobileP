@@ -16,7 +16,7 @@ interface WordDao {
     fun getWordById(wordId: Int): Word
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertWord(word: Word)
+    fun insertWord(word: Word):Long
 
     @Update
     fun updateWord(word: Word)
