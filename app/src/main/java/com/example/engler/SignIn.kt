@@ -14,6 +14,15 @@ import com.example.engler.data.entities.User
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
+import android.util.Log
+
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import com.example.engler.ApiClient
+
 
 class SignIn : AppCompatActivity() {
     private var currentUserId: Int = -1
@@ -96,10 +105,10 @@ class SignIn : AppCompatActivity() {
             email = password, // You may want to store an email separately, but using password here as a placeholder // Ensure that the User entity has a password field
             totalScore = 0,
             createdAt = System.currentTimeMillis(),
-            jwtToken = "aasdf"
+            jwtToken = ""
         )
 
-        // Access the database and insert the user
+        //LOCAL REGISTER
         val db = MyAppDatabase.getInstance(applicationContext)
         val userDao = db.userDao
 
@@ -110,7 +119,29 @@ class SignIn : AppCompatActivity() {
             showMessage("Account created successfully!")
 
             super.onBackPressed()
+        }
 
+        //CRUD REGISTER
+
+        val baseUrl = "https://api.ifisnot.com"
+        val apiClient = ApiClient()
+
+
+        CoroutineScope(Dispatchers.IO).launch {
+            // Register
+            val registerResult = apiClient.registerUser(
+                "$baseUrl/register",
+                username,
+                "${username}@example.com",
+                password,
+
+            )
+            Log.d("Register Result", registerResult)
+            withContext(Dispatchers.Main) {
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(this@SignIn, "Register: $registerResult", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

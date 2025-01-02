@@ -96,6 +96,9 @@ class WordList : AppCompatActivity() {
         val inputEditTextTranslation = EditText(this).apply { hint = "Enter translation" }
         val inputEditTextDescription = EditText(this).apply { hint = "Enter description" }
 
+        if(detectedText!=""){
+            inputEditText.setText(detectedText)
+        }
         // Translate Button
         val translateButton = Button(this).apply {
             text = "Translate"

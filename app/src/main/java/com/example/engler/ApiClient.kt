@@ -10,9 +10,9 @@ import okhttp3.Response
 class ApiClient {
 
     private val client = OkHttpClient()
-    private var jwtToken: String? = null
+    var jwtToken: String? = ""
 
-    suspend fun makePostRequest(url: String, jsonBody: String): String {
+      fun makePostRequest(url: String, jsonBody: String): String {
         val body = RequestBody.create(
             "application/json".toMediaTypeOrNull(),
             jsonBody
@@ -32,7 +32,7 @@ class ApiClient {
         return executeRequest(request)
     }
 
-    suspend fun makeGetRequest(url: String): String {
+      fun makeGetRequest(url: String): String {
         val requestBuilder = Request.Builder()
             .url(url)
             .get()
@@ -74,7 +74,7 @@ class ApiClient {
         return response
     }
 
-    suspend fun addWord(url: String, wordTr: String, wordEn: String): String {
+      fun addWord(url: String, wordTr: String, wordEn: String): String {
         val jsonBody = """
             {
                 "word_tr": "$wordTr",
@@ -85,11 +85,11 @@ class ApiClient {
         return makePostRequest(url, jsonBody)
     }
 
-    suspend fun getWords(url: String): String {
+      fun getWords(url: String): String {
         return makeGetRequest(url)
     }
 
-    suspend fun addUserWord(url: String, wordId: Int, score: Int, definition: String): String {
+     suspend fun addUserWord(url: String, wordId: Int, score: Int, definition: String): String {
         val jsonBody = """
             {
                 "word_id": $wordId,
@@ -101,11 +101,11 @@ class ApiClient {
         return makePostRequest(url, jsonBody)
     }
 
-    suspend fun getUserWords(url: String): String {
+      fun getUserWords(url: String): String {
         return makeGetRequest(url)
     }
 
-    suspend fun updateWord(url: String, wordTr: String, wordEn: String): String {
+      fun updateWord(url: String, wordTr: String, wordEn: String): String {
         val jsonBody = """
             {
                 "word_tr": "$wordTr",
@@ -132,7 +132,7 @@ class ApiClient {
         return executeRequest(request)
     }
 
-    suspend fun deleteWord(url: String): String {
+      fun deleteWord(url: String): String {
         val requestBuilder = Request.Builder()
             .url(url)
             .delete()
@@ -145,7 +145,7 @@ class ApiClient {
         return executeRequest(request)
     }
 
-    private suspend fun executeRequest(request: Request): String {
+    private   fun executeRequest(request: Request): String {
         return try {
             val response: Response = client.newCall(request).execute()
             if (response.isSuccessful) {

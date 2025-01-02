@@ -5,7 +5,7 @@ import android.content.Intent
 class PowerReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         val batteryLevel = BatteryUtils.getBatteryLevel(intent)
-        if (batteryLevel > 50 && NetworkUtils.isConnected(context)) {
+        if (batteryLevel > 10 && NetworkUtils.isConnected(context)) {
             NotificationHelper(context).showNotification(batteryLevel)
         }
     }

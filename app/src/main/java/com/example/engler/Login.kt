@@ -9,6 +9,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import com.example.engler.data.MyAppDatabase
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.json.JSONObject
+
+
+
 
 class Login(
     private val context: Context,
@@ -24,17 +32,46 @@ class Login(
         val userDao = db.userDao
         var isUser = false
 
+
+
+        //REST LOGIN
+        val baseUrl = "https://api.ifisnot.com"
+        val apiClient = ApiClient()
+
+        var token: String =""
+        CoroutineScope(Dispatchers.IO).launch {
+            val loginResult = apiClient.loginUser("$baseUrl/login", "${userName.text.toString()}@example.com", password.text.toString() )
+                         withContext(Dispatchers.Main) {
+                            if (loginResult.contains("Error")) {
+                                 return@withContext
+                             } else {
+                                 Toast.makeText(context, "Login Successful", Toast.LENGTH_LONG).show()
+                                val jsonObject = JSONObject(loginResult)
+                                val token = jsonObject.getString("token")
+                                 showMessage(token)
+                                 isUser=true
+                             }
+                        }
+        }
+        //LOCAL LOGIN
         lifecycleOwner.lifecycleScope.launch {
             // Veritabanında kullanıcıyı sorgulama
             val user = userDao.getUserByUsername(userName.text.toString())
-            btnSignIn.text=userName.text.toString()+ password.text.toString()
-            if (user != null && user.email== password.text.toString()) {
+
+            if (user != null && user.email == password.text.toString()) {
                 isUser = true
+
+                if (token != null) {
+                    userDao.updateJwt(userName.text.toString(), password.text.toString(), token)
+                }
+
                 showMessage("Login successful!")
             } else {
                 showMessage("Invalid username or password!")
             }
         }
+
+
 
         return isUser
     }
