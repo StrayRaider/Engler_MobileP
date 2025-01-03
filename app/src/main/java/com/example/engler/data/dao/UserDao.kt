@@ -20,6 +20,8 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUser(user: User)
 
+    @Query("UPDATE users SET jwtToken = :jwtToken WHERE username = :username AND email = :password")
+    fun updateJwt(username: String, password: String, jwtToken: String)
 
     @Update
     fun updateUser(user: User)

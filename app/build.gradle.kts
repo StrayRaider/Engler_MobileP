@@ -86,6 +86,8 @@ dependencies {
     kapt("androidx.room:room-compiler:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
 
+    implementation ("com.google.code.gson:gson:2.8.8")
+
     // SDK Coroutines (url-test specific)
     implementation("com.google.android.libraries.sdkcoroutines:sdkcoroutines:1.0.0")
 }

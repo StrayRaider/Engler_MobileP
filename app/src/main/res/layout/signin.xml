@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:hint="birth date (dd/mm/yyyy)"
             android:layout_below="@id/etPassword"
-            android:inputType="date"
+            android:inputType="none"
             android:maxLines="1"
             android:importantForAccessibility="yes" />
 
