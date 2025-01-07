@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Geri dönme butonu -->
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back Button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"
+
+        />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        style="@style/TextAppearance.MaterialComponents.Headline5"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:text="Engler"
+        android:textSize="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btnBack"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingConstraints"
+        android:textColor="@color/buttonColorBlueDark"/>/>
+
+    <TextView
+        android:id="@+id/tvSubTitle"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="30dp"
+        android:text="Enter your Informations"
+        android:textSize="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+
+    <RelativeLayout
+        android:id="@+id/rlInputs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        app:layout_constraintTop_toBottomOf="@+id/tvSubTitle"
+        android:layout_marginTop="45dp"
+        android:layout_marginHorizontal="20dp">
+
+        <EditText
+            android:id="@+id/etUserName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="username" />
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="password"
+            android:layout_below="@id/etUserName"
+            android:inputType="textPassword"/>
+
+        <!-- Doğum tarihi seçimi için DatePicker -->
+        <EditText
+            android:id="@+id/etBirthDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="birth date (dd/mm/yyyy)"
+            android:layout_below="@id/etPassword"
+            android:inputType="none"
+            android:maxLines="1"
+            android:importantForAccessibility="yes" />
+
+        <!-- Cinsiyet seçimi için Spinner -->
+        <Spinner
+            android:id="@+id/spGender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etBirthDate"
+            android:entries="@array/gender_options"
+            />
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create your account"
+        app:layout_constraintTop_toBottomOf="@+id/rlInputs"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@color/buttonColorBlue"/>/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

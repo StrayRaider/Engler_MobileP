@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    <ImageButton
+        android:id="@+id/btnBack"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/ic_back"
+        android:background="@android:color/transparent"
+        android:contentDescription="Back Button"
+        android:layout_margin="10dp"
+
+        />
+
+        <Button
+            android:id="@+id/btnChatbot"
+            android:layout_width="163dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="100dp"
+            android:text="Chatbot"
+            android:backgroundTint="@color/buttonColorRed"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:padding="16dp">
+
+
+
+        <ImageButton
+            android:id="@+id/ibAccount"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:background="@null"
+            android:contentDescription="Profile Button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/profile_user" />
+
+        <Button
+            android:id="@+id/btnQuiz"
+            android:layout_width="270dp"
+            android:layout_height="wrap_content"
+            android:text="Quiz Time"
+            android:backgroundTint="@color/buttonColorBlue"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Word List"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <!-- ListView to display the words -->
+
+    <!-- Button to add a new word -->
+    <ListView
+        android:id="@+id/lvWords"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+
+    <Button
+        android:id="@+id/btnCamera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="camera"
+        android:backgroundTint="@color/buttonColor"/>
+
+    <Button
+        android:id="@+id/btnAddWord"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Add New Word"
+        android:backgroundTint="@color/buttonColor"/>
+
+
+</LinearLayout>
